@@ -150,7 +150,7 @@ internal class ReCaptchaWebViewManager {
     func reset() {
         didFinishLoading = false
         configureWebViewDispatchToken = UUID()
-
+        webviewDelegate.reset()
         webView.evaluateJavaScript(Constants.ResetCommand) { [weak self] _, error in
             if let error = error {
                 self?.decoder.send(error: .unexpected(error))
@@ -223,6 +223,8 @@ fileprivate extension ReCaptchaWebViewManager {
         case .didLoad:
             // For testing purposes
             didFinishLoading = true
+            webviewDelegate.execute()
+
 
         case .log(let message):
             #if DEBUG
